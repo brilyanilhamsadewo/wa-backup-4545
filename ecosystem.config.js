@@ -26,6 +26,8 @@ module.exports = {
     name: "app",
     script: "./app.js",
     instances: "1",
+    cron_restart: '0 0 * * *',
+    watch: true,
     env: {
       NODE_ENV: "development",
     },
