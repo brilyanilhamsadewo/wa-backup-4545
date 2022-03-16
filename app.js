@@ -10,8 +10,8 @@ const fileUpload = require('express-fileupload');
 const axios = require('axios');
 const mime = require('mime-types');
 
-const port = process.env.PORT || 8000;
-// const port = 8080;
+//const port = process.env.PORT || 8000;
+ const port = 8000;
 
 const app = express();
 const server = http.createServer(app);
@@ -44,7 +44,7 @@ const sesi = require('./helpers/session.js');
   const client = new Client({
     restartOnAuthFail: true,
     puppeteer: {
-      headless: true,
+      headless: false,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
