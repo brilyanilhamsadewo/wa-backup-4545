@@ -11,7 +11,7 @@ const createConnection = async () => {
 
 const getReply = async(keyword) => {
     const connection = await createConnection();
-    const [rows] = await connection.execute('SELECT message FROM wa_replies WHERE keyword=?',[keyword]);
+    const [rows] = await connection.execute('SELECT message FROM wa_replies WHERE keyword=? COLLATE utf8_unicode_ci',[keyword]);
     if(rows.length > 0) return rows[0].message;
     return false;
 }
