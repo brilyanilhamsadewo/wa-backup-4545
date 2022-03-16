@@ -4,14 +4,14 @@ const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
-// const fs = require('fs');
+const fs = require('fs');
 const { phoneNumberFormatter } = require('./helpers/formatter');
 const fileUpload = require('express-fileupload');
 const axios = require('axios');
 const mime = require('mime-types');
 
-//const port = process.env.PORT || 8000;
- const port = 8000;
+const port = process.env.PORT || 8000;
+//  const port = 8000;
 
 const app = express();
 const server = http.createServer(app);
