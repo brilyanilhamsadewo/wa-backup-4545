@@ -4,14 +4,14 @@ const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
-const fs = require('fs');
+// const fs = require('fs');
 const { phoneNumberFormatter } = require('./helpers/formatter');
 const fileUpload = require('express-fileupload');
 const axios = require('axios');
 const mime = require('mime-types');
 
 const port = process.env.PORT || 8000;
-//  const port = 8000;
+// const port = 8080;
 
 const app = express();
 const server = http.createServer(app);
@@ -277,67 +277,67 @@ const sesi = require('./helpers/session.js');
     });
   });
   
-  const findGroupByName = async function(name) {
-    const group = await client.getChats().then(chats => {
-      return chats.find(chat => 
-        chat.isGroup && chat.name.toLowerCase() == name.toLowerCase()
-      );
-    });
-    return group;
-  }
+  // const findGroupByName = async function(name) {
+  //   const group = await client.getChats().then(chats => {
+  //     return chats.find(chat => 
+  //       chat.isGroup && chat.name.toLowerCase() == name.toLowerCase()
+  //     );
+  //   });
+  //   return group;
+  // }
   
   // Send message to group
   // You can use chatID or group name, yea!
-  app.post('/send-group-message', [
-    body('id').custom((value, { req }) => {
-      if (!value && !req.body.name) {
-        throw new Error('Invalid value, you can use `id` or `name`');
-      }
-      return true;
-    }),
-    body('message').notEmpty(),
-  ], async (req, res) => {
-    const errors = validationResult(req).formatWith(({
-      msg
-    }) => {
-      return msg;
-    });
+  // app.post('/send-group-message', [
+  //   body('id').custom((value, { req }) => {
+  //     if (!value && !req.body.name) {
+  //       throw new Error('Invalid value, you can use `id` or `name`');
+  //     }
+  //     return true;
+  //   }),
+  //   body('message').notEmpty(),
+  // ], async (req, res) => {
+  //   const errors = validationResult(req).formatWith(({
+  //     msg
+  //   }) => {
+  //     return msg;
+  //   });
   
-    if (!errors.isEmpty()) {
-      return res.status(422).json({
-        status: false,
-        message: errors.mapped()
-      });
-    }
+  //   if (!errors.isEmpty()) {
+  //     return res.status(422).json({
+  //       status: false,
+  //       message: errors.mapped()
+  //     });
+  //   }
   
-    let chatId = req.body.id;
-    const groupName = req.body.name;
-    const message = req.body.message;
+  //   // let chatId = req.body.id;
+  //   // const groupName = req.body.name;
+  //   // const message = req.body.message;
   
-    // Find the group by name
-    if (!chatId) {
-      const group = await findGroupByName(groupName);
-      if (!group) {
-        return res.status(422).json({
-          status: false,
-          message: 'No group found with name: ' + groupName
-        });
-      }
-      chatId = group.id._serialized;
-    }
+  //   // Find the group by name
+  //   if (!chatId) {
+  //     const group = await findGroupByName(groupName);
+  //     if (!group) {
+  //       return res.status(422).json({
+  //         status: false,
+  //         message: 'No group found with name: ' + groupName
+  //       });
+  //     }
+  //     chatId = group.id._serialized;
+  //   }
   
-    client.sendMessage(chatId, message).then(response => {
-      res.status(200).json({
-        status: true,
-        response: response
-      });
-    }).catch(err => {
-      res.status(500).json({
-        status: false,
-        response: err
-      });
-    });
-  });
+  //   client.sendMessage(chatId, message).then(response => {
+  //     res.status(200).json({
+  //       status: true,
+  //       response: response
+  //     });
+  //   }).catch(err => {
+  //     res.status(500).json({
+  //       status: false,
+  //       response: err
+  //     });
+  //   });
+  // });
   
   // Clearing message on spesific chat
   app.post('/clear-message', [
