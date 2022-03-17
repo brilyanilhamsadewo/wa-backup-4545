@@ -4,7 +4,7 @@ const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
 const qrcode = require('qrcode');
 const http = require('http');
-// const fs = require('fs');
+const fs = require('fs');
 const { phoneNumberFormatter } = require('./helpers/formatter');
 const fileUpload = require('express-fileupload');
 const axios = require('axios');
@@ -69,7 +69,7 @@ const sesi = require('./helpers/session.js');
       msg.reply(replyMessage);
     }
     else if (replyMessage == false) {
-      msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan/r/n*Pesan ini bersifat otomatis*');
+      msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
     // if (msg.body == 'Selamat pagi') {
     //   msg.reply('Selamat pagi, ada yang bisa kami bantu ?\n---\n1. Donor setelah vaksinasi 1 dan 2\n2. Donor setelah covid');
     // } else if (msg.body == 'Selamat siang') {
