@@ -53,7 +53,8 @@ const sesi = require('./helpers/session.js');
         '--no-first-run',
         '--no-zygote',
         '--single-process', // <- this one doesn't works in Windows
-        '--disable-gpu'
+        '--disable-gpu',
+        '--shm-size=3gb'
       ],
     },
     session: savedSession
