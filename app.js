@@ -69,17 +69,21 @@ const sesi = require('./helpers/session.js');
     if (replyMessage !== false) {
       msg.reply(replyMessage);
     }
-//     else if (replyMessage == false) {
-//       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
-// //     else (replyMessage == false) {
-      else {
+    else if (replyMessage == false) {
       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
+// //     else (replyMessage == false) {
+//       else {
+//       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
     // if (msg.body == 'Selamat pagi') {
     //   msg.reply('Selamat pagi, ada yang bisa kami bantu ?\n---\n1. Donor setelah vaksinasi 1 dan 2\n2. Donor setelah covid');
-    // } else if (msg.body == 'Selamat siang') {
-    //   msg.reply('selamat siang, ada yang bisa kami bantu ?');
-    // } else if (msg.body == 'Selamat sore') {
-    //   msg.reply('selamat sore, ada yang bisa kami bantu ?');
+    } else if (msg.body == 'Selamat siang') {
+      msg.reply('selamat siang, ada yang bisa kami bantu ?');
+    } else if (msg.body == 'Selamat sore') {
+      msg.reply('selamat sore, ada yang bisa kami bantu ?');
+    } else if (msg.body == 'Selamat pagi') {
+      msg.reply('selamat pagi, ada yang bisa kami bantu ?');
+    } else if (msg.body == 'Selamat malam') {
+      msg.reply('selamat malam, ada yang bisa kami bantu ?');
     // } else if (msg.body == 'Ping') {
     //   msg.reply('selamat sore, ada yang bisa kami bantu ?');
     // } else if (msg.body == 'P') {
