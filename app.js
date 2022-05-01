@@ -93,21 +93,21 @@ const sesi = require('./helpers/session.js');
     //   msg.reply('testing nomor 1');
     // } else if (msg.body == '2') {
     //   msg.reply('testing nomor 2');
-    // } else if (msg.body == '!groups') {
-    //   client.getChats().then(chats => {
-    //     const groups = chats.filter(chat => chat.isGroup);
+    } else if (msg.body == '!groups') {
+      client.getChats().then(chats => {
+        const groups = chats.filter(chat => chat.isGroup);
   
-    //     if (groups.length == 0) {
-    //       msg.reply('You have no group yet.');
-    //     } else {
-    //       let replyMsg = '*YOUR GROUPS*\n\n';
-    //       groups.forEach((group, i) => {
-    //         replyMsg += `ID: ${group.id._serialized}\nName: ${group.name}\n\n`;
-    //       });
-    //       replyMsg += '_You can use the group id to send a message to the group._'
-    //       msg.reply(replyMsg);
-    //     }
-    //   });
+        if (groups.length == 0) {
+//           msg.reply('You have no group yet.');
+        } else {
+          let replyMsg = '*YOUR GROUPS*\n\n';
+          groups.forEach((group, i) => {
+//             replyMsg += `ID: ${group.id._serialized}\nName: ${group.name}\n\n`;
+          });
+//           replyMsg += '_You can use the group id to send a message to the group._'
+//           msg.reply(replyMsg);
+        }
+      });
     }
   
     // Downloading media
