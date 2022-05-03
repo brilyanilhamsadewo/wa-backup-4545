@@ -195,7 +195,7 @@ const sesi = require('./helpers/session.js');
       // });
 
 //        sesi.removeSession();
-//       client.destroy();
+      client.destroy();
       client.initialize().catch(err => {
         console.log(err);
       });
