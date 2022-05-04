@@ -1,4 +1,4 @@
-const { Client, MessageMedia, LegacySessionAuth } = require('whatsapp-web.js');
+const { Client, MessageMedia, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
@@ -33,7 +33,7 @@ app.use(fileUpload({
 
 const sesi = require('./helpers/session.js');
 
-(async() => {
+// (async() => {
   app.get('/', (req, res) => {
     res.sendFile('index.html', {
       root: __dirname
@@ -53,7 +53,11 @@ const sesi = require('./helpers/session.js');
     })
   });
 
-  const savedSession = await sesi.readSession();
+//   const client = new Client({
+//       authStrategy: new LocalAuth()
+//   });
+
+//   const savedSession = await sesi.readSession();
 //   const client = new Client({
 //     restartOnAuthFail: true,
 //     puppeteer: {
@@ -416,7 +420,7 @@ const sesi = require('./helpers/session.js');
   server.listen(port, function() {
     console.log('App running on *: ' + port);
   });
-})();
+// })();
 
 // app.get('/', (req, res) => {
 //   res.sendFile('index.html', {
