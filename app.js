@@ -84,9 +84,9 @@ app.use(fileUpload({
     const keyword = msg.body.toLowerCase();
     const replyMessage = await db.getReply(keyword);
   
-//     if (replyMessage !== false) {
-    //   msg.reply(replyMessage);
-    // }
+    if (replyMessage !== false) {
+      msg.reply(replyMessage);
+    }
     else if (replyMessage == false) {
       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
 // //     else (replyMessage == false) {
