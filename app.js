@@ -199,7 +199,7 @@ const sesi = require('./helpers/session.js');
     client.on('authenticated', () => {
       socket.emit('authenticated', 'Whatsapp is authenticated!');
       socket.emit('message', 'Whatsapp is authenticated!');
-      console.log('AUTHENTICATED', session);
+      console.log('AUTHENTICATED');
       // sessionCfg = session;
       // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
       //   if (err) {
