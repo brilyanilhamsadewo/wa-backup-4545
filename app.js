@@ -196,19 +196,19 @@ const sesi = require('./helpers/session.js');
 //          }
 //       });
 //     });
-    client.on('authenticated', () => {
-      socket.emit('authenticated', 'Whatsapp is authenticated!');
-      socket.emit('message', 'Whatsapp is authenticated!');
-      console.log('AUTHENTICATED');
-      // sessionCfg = session;
-      // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
-      //   if (err) {
-      //     console.error(err);
-      //   }
-      // });
-      ////save to db
-//       sesi.saveSession(session);
-    });
+//     client.on('authenticated', () => {
+//       socket.emit('authenticated', 'Whatsapp is authenticated!');
+//       socket.emit('message', 'Whatsapp is authenticated!');
+//       console.log('AUTHENTICATED');
+//       // sessionCfg = session;
+//       // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
+//       //   if (err) {
+//       //     console.error(err);
+//       //   }
+//       // });
+//       ////save to db
+// //       sesi.saveSession(session);
+// //     });
   
     client.on('auth_failure', function(session) {
       socket.emit('message', 'Auth failure, restarting...');
