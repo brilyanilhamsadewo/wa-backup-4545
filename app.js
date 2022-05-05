@@ -40,22 +40,22 @@ const sesi = require('./helpers/session.js');
     });
   });
   
-  const SESSION_FILE_PATH = './session.json';
+//   const SESSION_FILE_PATH = './session.json';
  
   let sessionData;
   if(fs.existsSync(SESSION_FILE_PATH)) {
       sessionData = require(SESSION_FILE_PATH);
   }
 
-  const client = new Client({
-    authStrategy: new LegacySessionAuth({
-        session: sessionData
-    })
-  });
-
 //   const client = new Client({
-//       authStrategy: new LocalAuth()
+//     authStrategy: new LegacySessionAuth({
+//         session: sessionData
+//     })
 //   });
+
+  const client = new Client({
+      authStrategy: new LocalAuth()
+  });
 
 //   const savedSession = await sesi.readSession();
 //   const client = new Client({
@@ -188,14 +188,14 @@ const sesi = require('./helpers/session.js');
       socket.emit('message', 'Whatsapp is ready!');
     });
   
-    client.on('authenticated', (session) => {
-    sessionData = session;
-    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
-        if (err) {
-            console.error(err);
-         }
-      });
-    });
+//     client.on('authenticated', (session) => {
+//     sessionData = session;
+//     fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
+//         if (err) {
+//             console.error(err);
+//          }
+//       });
+//     });
 //     client.on('authenticated', (session) => {
 //       socket.emit('authenticated', 'Whatsapp is authenticated!');
 //       socket.emit('message', 'Whatsapp is authenticated!');
