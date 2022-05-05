@@ -53,29 +53,29 @@ const sesi = require('./helpers/session.js');
 //     })
 //   });
 
-  const client = new Client({
-      authStrategy: new LocalAuth()
-  });
+//   const client = new Client({
+//       authStrategy: new LocalAuth()
+//   });
 
 //   const savedSession = await sesi.readSession();
-//   const client = new Client({
-//     restartOnAuthFail: true,
-//     puppeteer: {
-//       headless: true,
-//       args: [
-//         '--no-sandbox',
-//         '--disable-setuid-sandbox',
-//         '--disable-dev-shm-usage',
-//         '--disable-accelerated-2d-canvas',
-//         '--no-first-run',
-//         '--no-zygote',
-//         '--single-process', // <- this one doesn't works in Windows
-//         '--disable-gpu',
-//         '--shm-size=3gb'
-//       ],
-//     },
-//     session: savedSession
-//   });
+  const client = new Client({
+    restartOnAuthFail: true,
+    puppeteer: {
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-accelerated-2d-canvas',
+        '--no-first-run',
+        '--no-zygote',
+        '--single-process', // <- this one doesn't works in Windows
+        '--disable-gpu',
+        '--shm-size=3gb'
+      ],
+    },
+    authStrategy: new LocalAuth()
+  });
   
   const db = require('./helpers/db');
   
@@ -188,7 +188,7 @@ const sesi = require('./helpers/session.js');
       socket.emit('message', 'Whatsapp is ready!');
     });
   
-//     client.on('authenticated', (session) => {
+//     client.on('authenticated', () => {
 //     sessionData = session;
 //     fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
 //         if (err) {
@@ -196,19 +196,19 @@ const sesi = require('./helpers/session.js');
 //          }
 //       });
 //     });
-//     client.on('authenticated', (session) => {
-//       socket.emit('authenticated', 'Whatsapp is authenticated!');
-//       socket.emit('message', 'Whatsapp is authenticated!');
-//       console.log('AUTHENTICATED', session);
-//       // sessionCfg = session;
-//       // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
-//       //   if (err) {
-//       //     console.error(err);
-//       //   }
-//       // });
-//       ////save to db
+    client.on('authenticated', () => {
+      socket.emit('authenticated', 'Whatsapp is authenticated!');
+      socket.emit('message', 'Whatsapp is authenticated!');
+      console.log('AUTHENTICATED', session);
+      // sessionCfg = session;
+      // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
+      //   if (err) {
+      //     console.error(err);
+      //   }
+      // });
+      ////save to db
 //       sesi.saveSession(session);
-//     });
+    });
   
     client.on('auth_failure', function(session) {
       socket.emit('message', 'Auth failure, restarting...');
