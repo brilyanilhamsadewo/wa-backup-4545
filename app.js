@@ -1,4 +1,4 @@
-const { Client, MessageMedia, LocalAuth } = require('whatsapp-web.js');
+const { Client, MessageMedia, LegacySessionAuth, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
@@ -11,6 +11,7 @@ const axios = require('axios');
 const mime = require('mime-types');
 
 const port = process.env.PORT || 8000;
+// const port = 8080;
 
 const app = express();
 const server = http.createServer(app);
@@ -21,58 +22,86 @@ app.use(express.urlencoded({
   extended: true
 }));
 app.use(fileUpload({
-  debug: true
+  debug: false
 }));
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html', {
-    root: __dirname
+// const SESSION_FILE_PATH = './whatsapp-session.json';
+// let sessionCfg;
+// if (fs.existsSync(SESSION_FILE_PATH)) {
+//   sessionCfg = require(SESSION_FILE_PATH);
+// }
+
+// const sesi = require('./helpers/session.js');
+
+// (async() => {
+  app.get('/', (req, res) => {
+    res.sendFile('index.html', {
+      root: __dirname
+    });
   });
-});
+  
+  // const SESSION_FILE_PATH = './session.json';
+ 
+  // let sessionData;
+  // if(fs.existsSync(SESSION_FILE_PATH)) {
+  //     sessionData = require(SESSION_FILE_PATH);
+  // }
 
-const client = new Client({
-  restartOnAuthFail: true,
-  puppeteer: {
-    headless: true,
-    args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-accelerated-2d-canvas',
-      '--no-first-run',
-      '--no-zygote',
-      '--single-process', // <- this one doesn't works in Windows
-      '--disable-gpu'
-    ],
-  },
-  authStrategy: new LocalAuth()
-});
+  // const client = new Client({
+  //   authStrategy: new LegacySessionAuth({
+  //       session: sessionData
+  //   })
+  // });
 
+  const client = new Client({
+    authStrategy: new LocalAuth()
+  });
+
+
+//   const savedSession = await sesi.readSession();
+//   const client = new Client({
+//     restartOnAuthFail: true,
+//     puppeteer: {
+//       headless: true,
+//       args: [
+//         '--no-sandbox',
+//         '--disable-setuid-sandbox',
+//         '--disable-dev-shm-usage',
+//         '--disable-accelerated-2d-canvas',
+//         '--no-first-run',
+//         '--no-zygote',
+//         '--single-process', // <- this one doesn't works in Windows
+//         '--disable-gpu',
+//         '--shm-size=3gb'
+//       ],
+//     },
+//     session: savedSession
+//   });
   
   const db = require('./helpers/db');
   
   client.on('message', async msg => {
-    const keyword = msg.body.toLowerCase();
-    const replyMessage = await db.getReply(keyword);
+    // const keyword = msg.body.toLowerCase();
+    // const replyMessage = await db.getReply(keyword);
   
-    if (replyMessage !== false) {
-      msg.reply(replyMessage);
-    }
-    else if (replyMessage == false) {
-      msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
+    // if (replyMessage !== false) {
+    //   msg.reply(replyMessage);
+    // }
+    // else if (replyMessage == false) {
+      // msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
 // //     else (replyMessage == false) {
 //       else {
 //       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
     // if (msg.body == 'Selamat pagi') {
     //   msg.reply('Selamat pagi, ada yang bisa kami bantu ?\n---\n1. Donor setelah vaksinasi 1 dan 2\n2. Donor setelah covid');
-    } else if (msg.body == 'Selamat siang') {
-      msg.reply('selamat siang, ada yang bisa kami bantu ?');
-    } else if (msg.body == 'Selamat sore') {
-      msg.reply('selamat sore, ada yang bisa kami bantu ?');
-    } else if (msg.body == 'Selamat pagi') {
-      msg.reply('selamat pagi, ada yang bisa kami bantu ?');
-    } else if (msg.body == 'Selamat malam') {
-      msg.reply('selamat malam, ada yang bisa kami bantu ?');
+    // } else if (msg.body == 'Selamat siang') {
+    //   msg.reply('selamat siang, ada yang bisa kami bantu ?');
+    // } else if (msg.body == 'Selamat sore') {
+    //   msg.reply('selamat sore, ada yang bisa kami bantu ?');
+    // } else if (msg.body == 'Selamat pagi') {
+    //   msg.reply('selamat pagi, ada yang bisa kami bantu ?');
+    // } else if (msg.body == 'Selamat malam') {
+    //   msg.reply('selamat malam, ada yang bisa kami bantu ?');
     // } else if (msg.body == 'Ping') {
     //   msg.reply('selamat sore, ada yang bisa kami bantu ?');
     // } else if (msg.body == 'P') {
@@ -82,22 +111,22 @@ const client = new Client({
     //   msg.reply('testing nomor 1');
     // } else if (msg.body == '2') {
     //   msg.reply('testing nomor 2');
-    } else if (msg.body == '!groups') {
-      client.getChats().then(chats => {
-        const groups = chats.filter(chat => chat.isGroup);
+//     } else if (msg.body == '!groups') {
+//       client.getChats().then(chats => {
+//         const groups = chats.filter(chat => chat.isGroup);
   
-        if (groups.length == 0) {
-//           msg.reply('You have no group yet.');
-        } else {
-          let replyMsg = '*YOUR GROUPS*\n\n';
-          groups.forEach((group, i) => {
-//             replyMsg += `ID: ${group.id._serialized}\nName: ${group.name}\n\n`;
-          });
-//           replyMsg += '_You can use the group id to send a message to the group._'
-//           msg.reply(replyMsg);
-        }
-      });
-    }
+//         if (groups.length == 0) {
+// //           msg.reply('You have no group yet.');
+//         } else {
+//           let replyMsg = '*YOUR GROUPS*\n\n';
+//           groups.forEach((group, i) => {
+// //             replyMsg += `ID: ${group.id._serialized}\nName: ${group.name}\n\n`;
+//           });
+// //           replyMsg += '_You can use the group id to send a message to the group._'
+// //           msg.reply(replyMsg);
+//         }
+//       });
+    // }
   
     // Downloading media
     // if (msg.hasMedia) {
@@ -137,89 +166,118 @@ const client = new Client({
     // }
   });
   
-  client.initialize();
-
-// Socket IO
-io.on('connection', function(socket) {
-  socket.emit('message', 'Connecting...');
-
-  client.on('qr', (qr) => {
-    console.log('QR RECEIVED', qr);
-    qrcode.toDataURL(qr, (err, url) => {
-      socket.emit('qr', url);
-      socket.emit('message', 'QR Code received, scan please!');
-    });
+  client.initialize().catch(err => {
+    console.log(err);
   });
-
-  client.on('ready', () => {
-    socket.emit('ready', 'Whatsapp is ready!');
-    socket.emit('message', 'Whatsapp is ready!');
-  });
-
-  client.on('authenticated', () => {
-    socket.emit('authenticated', 'Whatsapp is authenticated!');
-    socket.emit('message', 'Whatsapp is authenticated!');
-    console.log('AUTHENTICATED');
-  });
-
-  client.on('auth_failure', function(session) {
-    socket.emit('message', 'Auth failure, restarting...');
-  });
-
-  client.on('disconnected', (reason) => {
-    socket.emit('message', 'Whatsapp is disconnected!');
-    client.destroy();
-    client.initialize();
-  });
-});
   
- const checkRegisteredNumber = async function(number) {
-  const isRegistered = await client.isRegisteredUser(number);
-  return isRegistered;
-}
+  
+  
+  // Socket IO
+  io.on('connection', function(socket) {
+    socket.emit('message', 'Connecting...');
+  
+    client.on('qr', (qr) => {
+      console.log('QR RECEIVED', qr);
+      qrcode.toDataURL(qr, (err, url) => {
+        socket.emit('qr', url);
+        socket.emit('message', 'QR Code received, scan please!');
+      });
+    });
+  
+    client.on('ready', () => {
+      socket.emit('ready', 'Whatsapp is ready!');
+      socket.emit('message', 'Whatsapp is ready!');
+    });
+  
+    // client.on('authenticated', (session) => {
+    // // sessionData = session;
+    // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), (err) => {
+    //     if (err) {
+    //         console.error(err);
+    //      }
+    //   });
+    // });
+    client.on('authenticated', () => {
+      socket.emit('authenticated', 'Whatsapp is authenticated!');
+      socket.emit('message', 'Whatsapp is authenticated!');
+      console.log('AUTHENTICATED');
+//       // sessionCfg = session;
+//       // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
+//       //   if (err) {
+//       //     console.error(err);
+//       //   }
+//       // });
+//       ////save to db
+//       sesi.saveSession(session);
+    });
+  
+    client.on('auth_failure', function() {
+      socket.emit('message', 'Auth failure, restarting...');
+    });
+  
+    client.on('disconnected', (reason) => {
+      socket.emit('message', 'Whatsapp is disconnected!');
+      // fs.unlinkSync(SESSION_FILE_PATH, function(err) {
+      //     if(err) return console.log(err);
+      //     console.log('Session file deleted!');
+      // });
 
-// Send message
-app.post('/send-message', [
-  body('number').notEmpty(),
-  body('message').notEmpty(),
-], async (req, res) => {
-  const errors = validationResult(req).formatWith(({
-    msg
-  }) => {
-    return msg;
+//        sesi.removeSession();
+//       client.destroy();
+      client.initialize().catch(err => {
+        console.log(err);
+      });
+    });
   });
-
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      status: false,
-      message: errors.mapped()
-    });
+  
+  
+  const checkRegisteredNumber = async function(number) {
+    const isRegistered = await client.isRegisteredUser(number);
+    return isRegistered;
   }
-
-  const number = phoneNumberFormatter(req.body.number);
-  const message = req.body.message;
-
-  const isRegisteredNumber = await checkRegisteredNumber(number);
-
-  if (!isRegisteredNumber) {
-    return res.status(422).json({
-      status: false,
-      message: 'The number is not registered'
+  
+  // Send message
+  app.post('/send-message', [
+    body('number').notEmpty(),
+    body('message').notEmpty(),
+  ], async (req, res) => {
+    const errors = validationResult(req).formatWith(({
+      msg
+    }) => {
+      return msg;
     });
-  }
-
-  client.sendMessage(number, message).then(response => {
-    res.status(200).json({
-      status: true,
-      response: response
-    });
-  }).catch(err => {
-    res.status(500).json({
-      status: false,
-      response: err
+  
+    if (!errors.isEmpty()) {
+      return res.status(422).json({
+        status: false,
+        message: errors.mapped()
+      });
+    }
+  
+    const number = phoneNumberFormatter(req.body.number);
+    const message = req.body.message;
+  
+    const isRegisteredNumber = await checkRegisteredNumber(number);
+  
+    if (!isRegisteredNumber) {
+      return res.status(422).json({
+        status: false,
+        message: 'The number is not registered'
+      });
+    }
+  
+    client.sendMessage(number, message).then(response => {
+      res.status(200).json({
+        status: true,
+        response: response
+      });
+    }).catch(err => {
+      res.status(500).json({
+        status: false,
+        response: err
+      });
     });
   });
-});
   
   // Send media
   app.post('/send-media', async (req, res) => {
