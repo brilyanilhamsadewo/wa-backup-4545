@@ -47,33 +47,15 @@ app.use(fileUpload({
   //     sessionData = require(SESSION_FILE_PATH);
   // }
 
-//   const client = new Client({
-//     authStrategy: new LegacySessionAuth({
-//         session: sessionData
-//     })
-//   });
+  // const client = new Client({
+  //   authStrategy: new LegacySessionAuth({
+  //       session: sessionData
+  //   })
+  // });
 
   const client = new Client({
     authStrategy: new LocalAuth()
   });
-
-// const client = new Client({
-//   restartOnAuthFail: true,
-//   puppeteer: {
-//     headless: true,
-//     args: [
-//       '--no-sandbox',
-//       '--disable-setuid-sandbox',
-//       '--disable-dev-shm-usage',
-//       '--disable-accelerated-2d-canvas',
-//       '--no-first-run',
-//       '--no-zygote',
-//       '--single-process', // <- this one doesn't works in Windows
-//       '--disable-gpu'
-//     ],
-//   },
-//   authStrategy: new LocalAuth()
-// });
 
 
 //   const savedSession = await sesi.readSession();
@@ -94,7 +76,6 @@ app.use(fileUpload({
 //       ],
 //     },
 //     session: savedSession
-//        authStrategy: new LocalAuth()
 //   });
   
   const db = require('./helpers/db');
@@ -111,8 +92,8 @@ app.use(fileUpload({
 // //     else (replyMessage == false) {
 //       else {
 //       msg.reply('Mohon maaf saya tidak mengerti, mohon ketik "help" untuk bantuan.*Pesan ini bersifat otomatis*');
-//     if (msg.body == 'Selamat pagi') {
-//       msg.reply('Selamat pagi, ada yang bisa kami bantu ?\n---\n1. Donor setelah vaksinasi 1 dan 2\n2. Donor setelah covid');
+    // if (msg.body == 'Selamat pagi') {
+    //   msg.reply('Selamat pagi, ada yang bisa kami bantu ?\n---\n1. Donor setelah vaksinasi 1 dan 2\n2. Donor setelah covid');
     } else if (msg.body == 'Selamat siang') {
       msg.reply('selamat siang, ada yang bisa kami bantu ?');
     } else if (msg.body == 'Selamat sore') {
@@ -220,17 +201,17 @@ app.use(fileUpload({
       socket.emit('authenticated', 'Whatsapp is authenticated!');
       socket.emit('message', 'Whatsapp is authenticated!');
       console.log('AUTHENTICATED');
-//       // sessionCfg = session;
-//       // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
-//       //   if (err) {
-//       //     console.error(err);
-//       //   }
-//       // });
-//       ////save to db
-//       sesi.saveSession(session);
+      // sessionCfg = session;
+      // fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
+      //   if (err) {
+      //     console.error(err);
+      //   }
+      // });
+      ////save to db
+      // sesi.saveSession(session);
     });
   
-    client.on('auth_failure', function() {
+    client.on('auth_failure', function(session) {
       socket.emit('message', 'Auth failure, restarting...');
     });
   
@@ -250,13 +231,8 @@ app.use(fileUpload({
   });
   
   
-//   const checkRegisteredNumber = async function(number) {
-//     const isRegistered = await client.isRegisteredUser(number);
-//     return isRegistered;
-//   }
-  
-  const checkRegisteredNumber = function(number) {
-    const isRegistered = client.isRegisteredUser(number);
+  const checkRegisteredNumber = async function(number) {
+    const isRegistered = await client.isRegisteredUser(number);
     return isRegistered;
   }
   
@@ -281,8 +257,7 @@ app.use(fileUpload({
     const number = phoneNumberFormatter(req.body.number);
     const message = req.body.message;
   
-//     const isRegisteredNumber = await checkRegisteredNumber(number);
-    const isRegisteredNumber = checkRegisteredNumber(number);
+    const isRegisteredNumber = await checkRegisteredNumber(number);
   
     if (!isRegisteredNumber) {
       return res.status(422).json({
@@ -401,47 +376,47 @@ app.use(fileUpload({
   // });
   
   // Clearing message on spesific chat
-//   app.post('/clear-message', [
-//     body('number').notEmpty(),
-//   ], async (req, res) => {
-//     const errors = validationResult(req).formatWith(({
-//       msg
-//     }) => {
-//       return msg;
-//     });
+  // app.post('/clear-message', [
+  //   body('number').notEmpty(),
+  // ], async (req, res) => {
+  //   const errors = validationResult(req).formatWith(({
+  //     msg
+  //   }) => {
+  //     return msg;
+  //   });
   
-//     if (!errors.isEmpty()) {
-//       return res.status(422).json({
-//         status: false,
-//         message: errors.mapped()
-//       });
-//     }
+  //   if (!errors.isEmpty()) {
+  //     return res.status(422).json({
+  //       status: false,
+  //       message: errors.mapped()
+  //     });
+  //   }
   
-//     const number = phoneNumberFormatter(req.body.number);
+  //   const number = phoneNumberFormatter(req.body.number);
   
-//     const isRegisteredNumber = await checkRegisteredNumber(number);
+  //   const isRegisteredNumber = await checkRegisteredNumber(number);
   
-//     if (!isRegisteredNumber) {
-//       return res.status(422).json({
-//         status: false,
-//         message: 'The number is not registered'
-//       });
-//     }
+  //   if (!isRegisteredNumber) {
+  //     return res.status(422).json({
+  //       status: false,
+  //       message: 'The number is not registered'
+  //     });
+  //   }
   
-//     const chat = await client.getChatById(number);
+  //   const chat = await client.getChatById(number);
     
-//     chat.clearMessages().then(status => {
-//       res.status(200).json({
-//         status: true,
-//         response: status
-//       });
-//     }).catch(err => {
-//       res.status(500).json({
-//         status: false,
-//         response: err
-//       });
-//     })
-//   });
+  //   chat.clearMessages().then(status => {
+  //     res.status(200).json({
+  //       status: true,
+  //       response: status
+  //     });
+  //   }).catch(err => {
+  //     res.status(500).json({
+  //       status: false,
+  //       response: err
+  //     });
+  //   })
+  // });
   
   server.listen(port, function() {
     console.log('App running on *: ' + port);
