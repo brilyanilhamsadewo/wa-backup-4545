@@ -47,37 +47,37 @@ app.use(fileUpload({
   //     sessionData = require(SESSION_FILE_PATH);
   // }
 
-  // const client = new Client({
-  //   authStrategy: new LegacySessionAuth({
-  //       session: sessionData
-  //   })
-  // });
-
 //   const client = new Client({
-//     authStrategy: new LocalAuth()
+//     authStrategy: new LegacySessionAuth({
+//         session: sessionData
+//     })
 //   });
+
+  const client = new Client({
+    authStrategy: new LocalAuth()
+  });
 
 
 //   const savedSession = await sesi.readSession();
-  const client = new Client({
-    restartOnAuthFail: true,
-    puppeteer: {
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-accelerated-2d-canvas',
-        '--no-first-run',
-        '--no-zygote',
-        '--single-process', // <- this one doesn't works in Windows
-        '--disable-gpu',
-        '--shm-size=3gb'
-      ],
-    },
+//   const client = new Client({
+//     restartOnAuthFail: true,
+//     puppeteer: {
+//       headless: true,
+//       args: [
+//         '--no-sandbox',
+//         '--disable-setuid-sandbox',
+//         '--disable-dev-shm-usage',
+//         '--disable-accelerated-2d-canvas',
+//         '--no-first-run',
+//         '--no-zygote',
+//         '--single-process', // <- this one doesn't works in Windows
+//         '--disable-gpu',
+//         '--shm-size=3gb'
+//       ],
+//     },
 //     session: savedSession
-       authStrategy: new LocalAuth()
-  });
+//        authStrategy: new LocalAuth()
+//   });
   
   const db = require('./helpers/db');
   
