@@ -232,8 +232,13 @@ app.use(fileUpload({
   });
   
   
-  const checkRegisteredNumber = async function(number) {
-    const isRegistered = await client.isRegisteredUser(number);
+//   const checkRegisteredNumber = async function(number) {
+//     const isRegistered = await client.isRegisteredUser(number);
+//     return isRegistered;
+//   }
+  
+  const checkRegisteredNumber = function(number) {
+    const isRegistered = client.isRegisteredUser(number);
     return isRegistered;
   }
   
