@@ -224,7 +224,7 @@ app.use(fileUpload({
       // });
 
 //        sesi.removeSession();
-      client.destroy();
+//       client.destroy();
       client.initialize().catch(err => {
         console.log(err);
       });
