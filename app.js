@@ -224,7 +224,7 @@ app.use(fileUpload({
       // });
 
 //        sesi.removeSession();
-//       client.destroy();
+      client.destroy();
       client.initialize().catch(err => {
         console.log(err);
       });
@@ -258,8 +258,9 @@ app.use(fileUpload({
     const number = phoneNumberFormatter(req.body.number);
     const message = req.body.message;
   
-    const isRegisteredNumber = await checkRegisteredNumber(number);
-  
+//     const isRegisteredNumber = await checkRegisteredNumber(number);
+    const isRegisteredNumber = checkRegisteredNumber(number);
+   
     if (!isRegisteredNumber) {
       return res.status(422).json({
         status: false,
