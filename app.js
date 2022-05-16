@@ -232,15 +232,15 @@ app.use(fileUpload({
   });
   
   
-//   const checkRegisteredNumber = async function(number) {
-//     const isRegistered = await client.isRegisteredUser(number);
-//     return isRegistered;
-//   }
-  
-  const checkRegisteredNumber = function(number) {
-    const isRegistered = client.isRegisteredUser(number);
+  const checkRegisteredNumber = async function(number) {
+    const isRegistered = await client.isRegisteredUser(number);
     return isRegistered;
   }
+  
+//   const checkRegisteredNumber = function(number) {
+//     const isRegistered = client.isRegisteredUser(number);
+//     return isRegistered;
+//   }
   
   // Send message
   app.post('/send-message', [
@@ -263,8 +263,8 @@ app.use(fileUpload({
     const number = phoneNumberFormatter(req.body.number);
     const message = req.body.message;
   
-//     const isRegisteredNumber = await checkRegisteredNumber(number);
-    const isRegisteredNumber = checkRegisteredNumber(number);
+    const isRegisteredNumber = await checkRegisteredNumber(number);
+//     const isRegisteredNumber = checkRegisteredNumber(number);
    
     if (!isRegisteredNumber) {
       return res.status(422).json({
